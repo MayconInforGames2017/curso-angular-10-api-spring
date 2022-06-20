@@ -8,6 +8,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.PrePersist;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -30,9 +33,15 @@ public class Todo implements Serializable {
 	private Boolean done; // Indica se a tarefa foi feita ou não
 	
 	@Column
+	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
 	private LocalDateTime createdDate; // Data da criação da tarefa
 	
 	@Column
 	private LocalDateTime doneDate; // Data da conclusão da tarefa
+
+	@PrePersist
+	public void beforeSave() {
+		setCreatedDate(LocalDateTime.now());
+	}
 	
 }
