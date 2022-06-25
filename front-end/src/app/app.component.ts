@@ -11,6 +11,8 @@ import { Todo } from './todo';
 })
 export class AppComponent {
 
+  todos: Todo[] = []
+
   form: FormGroup = new FormGroup({
     description : new FormControl('')
   })
@@ -20,11 +22,12 @@ export class AppComponent {
   ) {}
 
   submit() {
-    console.log(this.form.value)
     const todo: Todo = { ...this.form.value };
     this.service
         .salvar(todo)
-        .subscribe(savedTodo => console.log(savedTodo))
-  }
-
+        .subscribe(savedTodo => {
+          this.todos.push(savedTodo)
+          this.form.reset()
+        })
+    }
 }
